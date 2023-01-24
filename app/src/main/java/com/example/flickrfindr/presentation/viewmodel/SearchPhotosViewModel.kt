@@ -40,7 +40,6 @@ class SearchPhotosViewModel(
             val uiState =
                 when (val response = getPhotosBySearchUseCase(searchText = searchText, 1)) {
                     is Response.Success -> {
-                        Log.d("PLING", "fetchPhotos: ${response.data}")
                         PhotosUiState.Success(response.data)
                     }
 

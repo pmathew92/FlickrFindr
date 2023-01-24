@@ -1,4 +1,4 @@
-package com.example.flickrfindr
+package com.example.flickrfindr.presentation
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -9,7 +9,11 @@ import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.rememberNavController
+import com.example.flickrfindr.presentation.ui.composescreen.SearchPhotoScreen
 import com.example.flickrfindr.presentation.ui.theme.FlickrFindrTheme
 
 class MainActivity : ComponentActivity() {
@@ -20,24 +24,31 @@ class MainActivity : ComponentActivity() {
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colors.background
+                    color = Color.Gray
                 ) {
-                    Greeting("Android")
+//                    val navController = rememberNavController()
+//                    NavHost(navController = navController, graph = )
+                    SearchPhotoScreen()
                 }
             }
         }
     }
 }
 
-@Composable
-fun Greeting(name: String) {
-    Text(text = "Hello $name!")
-}
 
+//TODO: Remove this once done
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
     FlickrFindrTheme {
-        Greeting("Android")
+        // A surface container using the 'background' color from the theme
+        Surface(
+            modifier = Modifier.fillMaxSize(),
+            color = MaterialTheme.colors.background
+        ) {
+//                    val navController = rememberNavController()
+//                    NavHost(navController = navController, graph = )
+            SearchPhotoScreen()
+        }
     }
 }

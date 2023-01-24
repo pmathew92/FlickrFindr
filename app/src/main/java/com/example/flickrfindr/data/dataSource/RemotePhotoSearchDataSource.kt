@@ -1,7 +1,7 @@
 package com.example.flickrfindr.data.dataSource
 
 import com.example.flickrfindr.data.dataSource.contract.PhotoSearchDataSource
-import com.example.flickrfindr.data.model.PhotoSearchEntity
+import com.example.flickrfindr.data.model.PhotoSearchDto
 import com.example.flickrfindr.data.network.api.PhotoSearchApi
 
 /**
@@ -15,7 +15,7 @@ class RemotePhotoSearchDataSource(private val photoSearchApi: PhotoSearchApi) :
     override suspend fun fetchPhotosBySearchText(
         searchText: String,
         currentPage: Int
-    ): PhotoSearchEntity {
+    ): PhotoSearchDto {
         return photoSearchApi.getPhotosBySearch(searchText, currentPage)
     }
 }

@@ -1,5 +1,6 @@
 package com.example.flickrfindr.data.repository
 
+import android.util.Log
 import com.example.flickrfindr.data.dataSource.contract.PhotoSearchDataSource
 import com.example.flickrfindr.data.util.toPhotoList
 import com.example.flickrfindr.domain.model.Photo
@@ -25,8 +26,13 @@ class PhotoRepositoryImpl(
                     .toPhotoList()
                 Response.Success(result)
             } catch (throwable: Throwable) {
+                Log.d(TAG, "Error fetching photos from web: ${throwable.stackTraceToString()}")
                 Response.Failure(throwable)
             }
         }
+    }
+
+    private companion object {
+        private const val TAG = "PhotoRepositoryImpl"
     }
 }

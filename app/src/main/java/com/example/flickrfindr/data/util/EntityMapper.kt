@@ -1,13 +1,13 @@
 package com.example.flickrfindr.data.util
 
-import com.example.flickrfindr.data.model.PhotoSearchEntity
+import com.example.flickrfindr.data.model.PhotoSearchDto
 import com.example.flickrfindr.domain.model.Photo
 
 
 /**
- * Extension method to map [PhotoSearchEntity] to [Photo] list
+ * Extension method to map [PhotoSearchDto] to [Photo] list
  */
-fun PhotoSearchEntity.toPhotoList(): List<Photo> {
+fun PhotoSearchDto.toPhotoList(): List<Photo> {
     return photos.photo.map { p0 ->
         Photo(
             p0.id,
