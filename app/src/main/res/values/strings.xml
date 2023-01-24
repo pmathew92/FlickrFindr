@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">FlickrFindr</string>
+
+    <string name="null_url">The url passed is empty or null</string>
+    <string name="unknown_error">UnKnown Error</string>
+    <string name="empty_result">No results found for the query</string>
 </resources>

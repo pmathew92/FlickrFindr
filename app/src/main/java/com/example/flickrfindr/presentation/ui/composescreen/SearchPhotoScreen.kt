@@ -1,6 +1,5 @@
 package com.example.flickrfindr.presentation.ui.composescreen
 
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -21,27 +20,35 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import com.example.flickrfindr.R
 import com.example.flickrfindr.domain.model.Photo
 import com.example.flickrfindr.presentation.viewmodel.PhotosUiState
 import com.example.flickrfindr.presentation.viewmodel.SearchPhotosViewModel
 import org.koin.androidx.compose.get
+import java.net.URLEncoder
+import java.nio.charset.StandardCharsets
 
-@Preview(showBackground = true)
 @Composable
-fun SearchPhotoScreen() {
+fun SearchPhotoScreen(navController: NavController) {
     val searchPhotoViewModel = get<SearchPhotosViewModel>()
     Column(modifier = Modifier.fillMaxSize()) {
         SearchView(searchPhotoViewModel)
-        PhotoUi(searchPhotoViewModel)
+        PhotoUi(searchPhotoViewModel, itemClick = { photo ->
+            val encodedUrl = URLEncoder.encode(photo.imageUrl, StandardCharsets.UTF_8.toString())
+            navController.navigate(Screen.DetailScreen.route + "/$encodedUrl") {
+                popUpTo(Screen.SearchScreen.route) {
+                    inclusive = true
+                }
+            }
+        })
     }
 }
 
@@ -96,16 +103,25 @@ fun SearchView(searchPhotoViewModel: SearchPhotosViewModel) {
 }
 
 @Composable
-fun PhotoUi(searchPhotoViewModel: SearchPhotosViewModel) {
+fun PhotoUi(
+    searchPhotoViewModel: SearchPhotosViewModel,
+    itemClick: (Photo) -> Unit
+) {
 
     val uiState = searchPhotoViewModel.photosUiState
     when (uiState.value) {
         is PhotosUiState.Success -> {
-            DisplaySearchedPhotoList((uiState.value as PhotosUiState.Success).photoList)
+            DisplaySearchedPhotoList(
+                (uiState.value as PhotosUiState.Success).photoList,
+                onItemClick = itemClick
+            )
         }
 
         is PhotosUiState.Error -> {
-
+            ErrorScreen(
+                errorText = (uiState.value as PhotosUiState.Error).errorMessage
+                    ?: stringResource(id = R.string.unknown_error)
+            )
         }
 
         is PhotosUiState.Loading -> {
@@ -121,13 +137,16 @@ fun PhotoUi(searchPhotoViewModel: SearchPhotosViewModel) {
 
 
 @Composable
-fun DisplaySearchedPhotoList(photoList: List<Photo>) {
-    LazyColumn(
-        verticalArrangement = Arrangement.spacedBy(8.dp),
-        contentPadding = PaddingValues(horizontal = 12.dp, vertical = 8.dp)
-    ) {
-        items(photoList) { photo ->
-            PhotoItem(photo = photo)
+fun DisplaySearchedPhotoList(photoList: List<Photo>, onItemClick: (Photo) -> Unit) {
+    if (photoList.isEmpty())
+        ErrorScreen(errorText = stringResource(id = R.string.empty_result))
+    else
+        LazyColumn(
+            verticalArrangement = Arrangement.spacedBy(8.dp),
+            contentPadding = PaddingValues(horizontal = 12.dp, vertical = 8.dp)
+        ) {
+            items(photoList) { photo ->
+                PhotoItem(photo = photo, itemClick = onItemClick)
+            }
         }
-    }
 }

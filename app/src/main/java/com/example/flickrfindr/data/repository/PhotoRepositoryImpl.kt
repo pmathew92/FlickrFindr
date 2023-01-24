@@ -5,8 +5,8 @@ import com.example.flickrfindr.data.dataSource.contract.PhotoSearchDataSource
 import com.example.flickrfindr.data.util.toPhotoList
 import com.example.flickrfindr.domain.model.Photo
 import com.example.flickrfindr.domain.repository.PhotoRepository
-import com.example.flickrfindr.domain.util.Response
 import com.example.flickrfindr.domain.util.DispatcherProvider
+import com.example.flickrfindr.domain.util.Response
 import kotlinx.coroutines.withContext
 
 /**
