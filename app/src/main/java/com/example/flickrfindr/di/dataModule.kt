@@ -1,4 +1,4 @@
-package com.example.nearbyrestaurants.di
+package com.example.flickrfindr.di
 
 import com.example.flickrfindr.data.dataSource.RemotePhotoSearchDataSource
 import com.example.flickrfindr.data.dataSource.contract.PhotoSearchDataSource

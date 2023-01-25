@@ -1,4 +1,4 @@
-package com.example.nearbyrestaurants.di
+package com.example.flickrfindr.di
 
 import com.example.flickrfindr.domain.util.DispatcherProvider
 import com.example.flickrfindr.util.DispatcherProviderImpl

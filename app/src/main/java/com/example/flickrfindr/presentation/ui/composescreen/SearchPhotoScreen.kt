@@ -32,22 +32,16 @@ import com.example.flickrfindr.R
 import com.example.flickrfindr.domain.model.Photo
 import com.example.flickrfindr.presentation.viewmodel.PhotosUiState
 import com.example.flickrfindr.presentation.viewmodel.SearchPhotosViewModel
-import org.koin.androidx.compose.get
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
 
 @Composable
-fun SearchPhotoScreen(navController: NavController) {
-    val searchPhotoViewModel = get<SearchPhotosViewModel>()
+fun SearchPhotoScreen(navController: NavController, searchPhotoViewModel: SearchPhotosViewModel) {
     Column(modifier = Modifier.fillMaxSize()) {
         SearchView(searchPhotoViewModel)
         PhotoUi(searchPhotoViewModel, itemClick = { photo ->
             val encodedUrl = URLEncoder.encode(photo.imageUrl, StandardCharsets.UTF_8.toString())
-            navController.navigate(Screen.DetailScreen.route + "/$encodedUrl") {
-                popUpTo(Screen.SearchScreen.route) {
-                    inclusive = true
-                }
-            }
+            navController.navigate(Screen.DetailScreen.route + "/$encodedUrl")
         })
     }
 }
@@ -125,7 +119,7 @@ fun PhotoUi(
         }
 
         is PhotosUiState.Loading -> {
-
+            LoadingProgress()
         }
 
         else -> {

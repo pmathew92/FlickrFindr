@@ -17,6 +17,8 @@ import com.example.flickrfindr.presentation.ui.composescreen.PhotoDetailScreen
 import com.example.flickrfindr.presentation.ui.composescreen.Screen
 import com.example.flickrfindr.presentation.ui.composescreen.SearchPhotoScreen
 import com.example.flickrfindr.presentation.ui.theme.FlickrFindrTheme
+import com.example.flickrfindr.presentation.viewmodel.SearchPhotosViewModel
+import org.koin.androidx.compose.koinViewModel
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -25,7 +27,7 @@ class MainActivity : ComponentActivity() {
             FlickrFindrTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
-                    color = Color.Gray
+                    color = Color.LightGray
                 ) {
                     Navigation()
                 }
@@ -41,7 +43,8 @@ class MainActivity : ComponentActivity() {
             startDestination = Screen.SearchScreen.route
         ) {
             composable(route = Screen.SearchScreen.route) {
-                SearchPhotoScreen(navController)
+                val searchPhotoViewModel = koinViewModel<SearchPhotosViewModel>()
+                SearchPhotoScreen(navController, searchPhotoViewModel)
             }
 
             composable(

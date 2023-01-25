@@ -1,10 +1,10 @@
 package com.example.flickrfindr
 
 import android.app.Application
-import com.example.nearbyrestaurants.di.commonModule
-import com.example.nearbyrestaurants.di.dataModule
-import com.example.nearbyrestaurants.di.domainModule
-import com.example.nearbyrestaurants.di.presentationModule
+import com.example.flickrfindr.di.commonModule
+import com.example.flickrfindr.di.dataModule
+import com.example.flickrfindr.di.domainModule
+import com.example.flickrfindr.di.presentationModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.GlobalContext
 
