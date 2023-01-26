@@ -6,7 +6,9 @@ import com.example.flickrfindr.data.network.HttpClientProvider
 import com.example.flickrfindr.data.network.HttpNetworkTransport
 import com.example.flickrfindr.data.network.api.PhotoSearchApi
 import com.example.flickrfindr.data.repository.PhotoRepositoryImpl
+import com.example.flickrfindr.data.repository.SearchHistoryRepositoryImpl
 import com.example.flickrfindr.domain.repository.PhotoRepository
+import com.example.flickrfindr.domain.repository.SearchHistoryRepository
 import com.example.flickrfindr.domain.util.DispatcherProvider
 import org.koin.dsl.module
 
@@ -24,5 +26,9 @@ val dataModule = module {
     }
     single<PhotoRepository> {
         PhotoRepositoryImpl(get<PhotoSearchDataSource>(), get<DispatcherProvider>())
+    }
+
+    single<SearchHistoryRepository> {
+        SearchHistoryRepositoryImpl()
     }
 }

@@ -9,7 +9,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.OutlinedTextField
@@ -17,6 +19,7 @@ import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -37,8 +40,12 @@ import java.nio.charset.StandardCharsets
 
 @Composable
 fun SearchPhotoScreen(navController: NavController, searchPhotoViewModel: SearchPhotosViewModel) {
+    val textValue = remember {
+        mutableStateOf("")
+    }
     Column(modifier = Modifier.fillMaxSize()) {
-        SearchView(searchPhotoViewModel)
+        SearchView(searchPhotoViewModel, textValue)
+        RecentSearchHistoryView(searchPhotoViewModel, textValue)
         PhotoUi(searchPhotoViewModel, itemClick = { photo ->
             val encodedUrl = URLEncoder.encode(photo.imageUrl, StandardCharsets.UTF_8.toString())
             navController.navigate(Screen.DetailScreen.route + "/$encodedUrl")
@@ -47,10 +54,7 @@ fun SearchPhotoScreen(navController: NavController, searchPhotoViewModel: Search
 }
 
 @Composable
-fun SearchView(searchPhotoViewModel: SearchPhotosViewModel) {
-    val textValue = remember {
-        mutableStateOf("")
-    }
+fun SearchView(searchPhotoViewModel: SearchPhotosViewModel, textValue: MutableState<String>) {
     val focusManager = LocalFocusManager.current
     Row(modifier = Modifier.padding(16.dp)) {
         OutlinedTextField(
@@ -93,6 +97,26 @@ fun SearchView(searchPhotoViewModel: SearchPhotosViewModel) {
             )
 
         )
+    }
+}
+
+@Composable
+fun RecentSearchHistoryView(
+    searchPhotoViewModel: SearchPhotosViewModel,
+    textValue: MutableState<String>
+) {
+    val searchHistoryList = searchPhotoViewModel.recentSearchQueries
+    if (searchHistoryList.value.isNotEmpty()) {
+        LazyRow(
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            contentPadding = PaddingValues(horizontal = 8.dp)
+        ) {
+            items(searchHistoryList.value) {
+                SearchHistoryItem(text = it) {
+                    textValue.value = it
+                }
+            }
+        }
     }
 }
 
